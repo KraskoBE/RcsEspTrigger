@@ -192,7 +192,7 @@ void Bhop()
 {
 	while (true)
 	{
-		if (Player.gfFlags() == 257 && GetAsyncKeyState(VK_SPACE) & 0x8000 && !Player.gIsDead())
+		if ( bBhop && Player.gfFlags() == 257 && GetAsyncKeyState(VK_SPACE) & 0x8000 && !Player.gIsDead())
 		{
 			Player.sJump();
 		}
