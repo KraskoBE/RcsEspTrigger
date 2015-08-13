@@ -12,13 +12,6 @@
 #include <stdint.h>
 #include "Colors.h"
 
-float PitchMinPunch = 2.f;
-float PitchMaxPunch = 2.f;
-float YawMinPunch = 2.f;
-float YawMaxPunch = 2.f;
-float smoothamount = 5.f;
-
-
 struct
 {
 	DWORD gPlayerBase()
@@ -101,6 +94,28 @@ struct
 		{
 			return gMemory->Read<int>(PlayerBase + gOffsets.gShotsFired());
 		}
+	}
+
+	int gfFlags()
+	{
+		DWORD PlayerBase = gPlayerBase();
+		if (PlayerBase)
+		{
+			return gMemory->Read<int>(PlayerBase + gOffsets.gFlags());
+		}
+	}
+
+	bool gIsDead()
+	{
+		DWORD PlayerBase = gPlayerBase();
+		return gMemory->Read<bool>(PlayerBase + gOffsets.gLifeState());
+	}
+
+	void sJump()
+	{
+		gMemory->Write<int>(ClientDLL + gOffsets.gjumpOffset(), 5);
+		Sleep(20);
+		gMemory->Write<int>(ClientDLL + gOffsets.gjumpOffset(), 4);
 	}
 }Player;
 

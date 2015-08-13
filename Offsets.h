@@ -150,6 +150,11 @@ public:
 		return dwActiveWeaponID;
 	}
 
+	DWORD gjumpOffset()
+	{
+		return jumpOffset;
+	}
+
 private:
 	const DWORD EntityList = 0x4A1D3A4;
 	const DWORD hActiveWeapon = 0x12C0;
@@ -164,6 +169,7 @@ private:
 	const DWORD ViewMatrix1 = 0xE42D0058;
 	const DWORD ViewMatrix2 = 0xE42D0168;
 	const DWORD dwActiveWeaponID = 0x1690;
+	const DWORD jumpOffset = 0x4AAE118;
 	const DWORD ViewMatrix3 = 0xE42D0478; //-=-=-=-=-=-=-=-=-=-=-=
 
 	const DWORD VecViewOrigin = 0x104;

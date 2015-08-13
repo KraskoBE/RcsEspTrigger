@@ -6,7 +6,7 @@
 using namespace std;
 
 int gamestate;
-bool bESP=0, bRCS=0, bTrig=0;
+bool bESP=0, bRCS=0, bTrig=0, bBhop=0;
 DWORD Engine;
 
 void iStatus()
@@ -17,6 +17,7 @@ void iStatus()
 	cout << "Trigger: " << bTrig << endl;
 	cout << "ESP: " << bESP << endl;
 	cout << "RCS: " << bRCS << endl;
+	cout << "Bhop: " << bBhop << endl;
 }
 
 void ReadData()
@@ -43,8 +44,32 @@ void ReadData()
 			bRCS = !bRCS;
 			iStatus();
 		}
+		if (GetAsyncKeyState(VK_F9))
+		{
+			bBhop = !bBhop;
+			iStatus();
+		}
 		Sleep(100);
 		Sleep(1);
+
+
+		if (!gMemory->Process("csgo.exe"))
+		{
+			cout << "\nCS GO Closed...\n";
+			cout << "Press Enter to terminate...";
+			cin.get();
+			cout << "Closing ESP thread\n";
+			Sleep(1000);
+			cout << "Closing Trigger thread\n";
+			Sleep(1000);
+			cout << "Closing RCS thread\n";
+			Sleep(1000);
+			cout << "Closing Bhop thread\n";
+			Sleep(1000);
+			cout << "Terminating.";
+			Sleep(200);
+			exit(0);
+		}
 	}
 
 }
@@ -52,6 +77,7 @@ void ReadData()
 void ESP();
 void Trig();
 void RCS();
+void Bhop();
 
 int main()
 {
@@ -69,17 +95,19 @@ int main()
 	cout << "\nTrigger: " << bTrig << endl;
 	cout << "ESP: " << bESP << endl;
 	cout << "RCS: " << bRCS << endl;
+	cout << "Bhop: " << bBhop << endl;
 
 	thread first(ReadData);
 	thread second(ESP);
 	thread third(Trig);
 	thread fourth(RCS);
+	thread fifth(Bhop);
 
 	first.join();
 	second.join();
 	third.join();
 	fourth.join();
-
+	fifth.join();
 
 	return 0;
 }
@@ -140,7 +168,7 @@ void RCS()
 			me.m_vecPunch.x *= 2.0f;
 			me.m_vecPunch.y *= 2.0f;
 
-			if (Player.gShotsFired() > 0)
+			if (Player.gShotsFired() > 1)
 			{
 				Vector currentAngles = gMemory->Read<Vector>(Engine + gOffsets.gSetViewAngles());
 
@@ -155,6 +183,18 @@ void RCS()
 			}
 			me.oldPunch = me.m_vecPunch;
 			Sleep(1);
+		}
+		Sleep(1);
+	}
+}
+
+void Bhop()
+{
+	while (true)
+	{
+		if (Player.gfFlags() == 257 && GetAsyncKeyState(VK_SPACE) & 0x8000 && !Player.gIsDead())
+		{
+			Player.sJump();
 		}
 		Sleep(1);
 	}
