@@ -5,7 +5,7 @@ struct RGBA
 	float r = 0;
 	float g = 0;
 	float b = 0;
-	float a = 0.7843137254901961f;
+	float a = 0.7843137254901962f;
 }RED, GREEN, BLUE, PINK;
 
 struct twoBools
